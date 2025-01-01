@@ -1,0 +1,184 @@
+.container1 {
+    float: left;
+    width: 300px;
+}
+.sideBar {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+}
+.sideBar div {
+    padding: 10px;
+}
+.sideBar :hover {
+    background-color: rgb(241, 241, 214);
+}
+.navbar-brand {
+    padding: .3125rem 0 .3125rem 22px;
+    margin-right: 1rem;
+    font-size: 1.25rem;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.notes-container {
+    margin-left: 320px;
+    padding: 20px;
+}
+.input-section {
+    margin-bottom: 20px;
+    max-width: 600px;
+}
+#noteInput {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: none;
+}
+.save-btn {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+#notesDisplay {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+.note-card {
+    width: 200px;
+    min-height: 150px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.note-content {
+    flex-grow: 1;
+    margin-bottom: 10px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+.note-buttons {
+    display: flex;
+    gap: 5px;
+    justify-content: flex-end;
+}
+.edit-btn, .delete-btn {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+}
+.edit-btn {
+    background-color: #ffc107;
+    color: black;
+}
+.delete-btn {
+    background-color: #dc3545;
+    color: white;
+}
+.edit-input {
+    width: 100%;
+    padding: 5px;
+    margin-right: 10px;
+    height: 100px;
+    resize: none;
+}
+.note-card {
+    width: 200px;
+    min-height: 150px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+}
+
+.note-title {
+    font-weight: bold;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+.input-section {
+    margin-bottom: 20px;
+    max-width: 600px;
+}
+
+#titleInput {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.edit-title-input {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 8px;
+    font-weight: bold;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+.pin-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #666;
+    padding: 5px;
+}
+
+.pin-btn:hover {
+    color: #000;
+}
+
+.pin-btn.pinned {
+    color: #dc3545;
+}
+
+.note-card {
+    width: 200px;
+    min-height: 150px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    position: relative;  /* For absolute positioning of pin button */
+}
+
+.pinned-note {
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+}
+
+#pinnedNotesSection {
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.section-title {
+    width: 100%;
+    margin-bottom: 10px;
+    color: #666;
+    font-size: 0.9em;
+    font-weight: bolder;
+}
