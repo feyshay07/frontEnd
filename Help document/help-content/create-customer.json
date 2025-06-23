@@ -1,0 +1,102 @@
+
+{
+  "title": "Create Customer Help",
+  "description": "Learn how to configure mandatory field options for creating customers.",
+  "version": "1.0",
+  "sections": [
+    {
+      "id": "customer-types",
+      "title": "Customer Types",
+      "icon": "users",
+      "overview": "Configure different customer categories for your business",
+      "steps": [
+        "Navigate to Settings > Customer Management > Customer Types",
+        "Click 'Add New' button",
+        "Enter Type Name, Code, and Description",
+        "Set user role permissions",
+        "Save the customer type"
+      ],
+      "navigationLinks": [
+        {
+          "text": "Setup Customer Types",
+          "url": "/settings/customer-types",
+          "permission": "admin.customer.manage",
+          "target": "_blank"
+        },
+        {
+          "text": "View Existing Types",
+          "url": "/settings/customer-types/list",
+          "permission": "customer.view"
+        }
+      ]
+    },
+    {
+      "id": "price-levels",
+      "title": "Price Levels",
+      "icon": "dollar",
+      "overview": "Set up pricing tiers for different customer segments",
+      "steps": [
+        "Go to Settings > Pricing > Price Levels",
+        "Click 'Create Price Level'",
+        "Configure level name, code, and percentages",
+        "Link to customer types if needed",
+        "Activate the price level"
+      ],
+      "navigationLinks": [
+        {
+          "text": "Manage Price Levels",
+          "url": "/settings/pricing/levels",
+          "permission": "admin.pricing.manage",
+          "target": "_blank"
+        }
+      ]
+    },
+    {
+      "id": "payment-terms",
+      "title": "Payment Terms",
+      "icon": "calendar",
+      "overview": "Define payment conditions and due dates",
+      "steps": [
+        "Access Settings > Finance > Payment Terms",
+        "Click 'Add Payment Terms'",
+        "Define term name and payment days",
+        "Set discounts and penalties if applicable",
+        "Mark default terms and save"
+      ],
+      "navigationLinks": [
+        {
+          "text": "Configure Payment Terms",
+          "url": "/settings/finance/payment-terms",
+          "permission": "admin.finance.manage"
+        }
+      ]
+    },
+    {
+      "id": "tax-codes",
+      "title": "Tax Codes",
+      "icon": "receipt",
+      "overview": "Configure tax rates and jurisdictions",
+      "steps": [
+    "Navigate to Lists > Accounting > Tax Code",
+    "Click on 'New Tax Code'",
+    "Enter the tax code name and relevant details",
+    "Set the applicable tax rate and type if required",
+    "Click 'Save' to create the tax code"
+    ],
+      "navigationLinks": [
+        {
+          "text": "Setup Tax Codes",
+          "url": "/settings/tax/codes",
+          "permission": "admin.tax.manage"
+        }
+      ]
+    }
+  ],
+  "FrequentlyAskedQuestions": [
+    "Common questions users ask when setting up customers",
+    "Troubleshooting issues they encounter", 
+    "System requirements or dependencies",
+    "Required permissions or access levels",
+    "Why are some fields mandatory"
+  ]
+}
