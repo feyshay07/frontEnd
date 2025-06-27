@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html ng-app="helpSystemDemo">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Help System Demo</title>
+
+    <!-- AngularJS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+
+    <!-- Your CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/helpSystem.css" />
+  </head>
+  <body ng-controller="MainController">
+    <!-- <div class="container">
+        <header>
+            <h1>ERP System - Create Customer</h1>
+            <p>This is a demo page showing the help system integration</p>
+        </header>
+        
+        <main>
+            <form class="customer-form">
+                <div class="form-group">
+                    <label for="customerName">Customer Name *</label>
+                    <input type="text" id="customerName" ng-model="customer.name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="customerType">Customer Type *</label>
+                    <select id="customerType" ng-model="customer.type" required>
+                        <option value="">Select Customer Type</option>
+                        <option value="retail">Retail</option>
+                        <option value="wholesale">Wholesale</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="priceLevel">Price Level *</label>
+                    <select id="priceLevel" ng-model="customer.priceLevel" required>
+                        <option value="">Select Price Level</option>
+                        <option value="standard">Standard</option>
+                        <option value="premium">Premium</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="paymentTerms">Payment Terms *</label>
+                    <select id="paymentTerms" ng-model="customer.paymentTerms" required>
+                        <option value="">Select Payment Terms</option>
+                        <option value="net30">Net 30</option>
+                        <option value="cod">COD</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="taxCode">Tax Code *</label>
+                    <select id="taxCode" ng-model="customer.taxCode" required>
+                        <option value="">Select Tax Code</option>
+                        <option value="standard">Standard</option>
+                        <option value="exempt">Tax Exempt</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Create Customer</button>
+            </form>
+        </main>
+    </div>
+-->
+    <!-- Help System Integration -->
+    <help-trigger page-id="create-customer" position="top-right"></help-trigger>
+
+    <!-- Scripts -->
+    <script src="js/help-system.module.js"></script>
+    <script src="js/app.js"></script>
+
+    <script>
+      // Configure ERP Theme
+      window.ERPTheme = {
+        primaryColor: "#007bff",
+        secondaryColor: "#6c757d",
+        backgroundColor: "#ffffff",
+        textColor: "#333333",
+        borderColor: "#dee2e6",
+        fontFamily: "Arial, sans-serif",
+      };
+
+      // Configure User Permissions
+      window.ERPUser = {
+        permissions: [
+          "admin.customer.manage",
+          "customer.view",
+          "admin.pricing.manage",
+          "admin.finance.manage",
+          "admin.tax.manage",
+        ],
+      };
+    </script>
+  </body>
+</html>

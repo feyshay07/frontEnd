@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Help System Enhancement Demo</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        transition: all 0.3s ease;
+      }
+
+      body.dark-mode {
+        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+      }
+
+      .demo-container {
+        display: flex;
+        height: 100vh;
+      }
+
+      /* Enhancement Controls Panel */
+      .controls-panel {
+        width: 300px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 20px;
+        overflow-y: auto;
+        border-right: 1px solid rgba(0, 0, 0, 0.1);
+      }
+
+      .dark-mode .controls-panel {
+        background: rgba(30, 30, 30, 0.95);
+        color: white;
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .controls-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+        color: #333;
+      }
+
+      .dark-mode .controls-title {
+        color: white;
+      }
+
+      .control-group {
+        margin-bottom: 25px;
+      }
+
+      .control-group h3 {
+        font-size: 1rem;
+        margin-bottom: 10px;
+        color: #007bff;
+        border-bottom: 1px solid #007bff;
+        padding-bottom: 5px;
+      }
+
+      .control-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      }
+
+      .dark-mode .control-item {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .control-item label {
+        font-size: 0.9rem;
+        cursor: pointer;
+        flex: 1;
+      }
+
+      .toggle-switch {
+        position: relative;
+        width: 50px;
+        height: 24px;
+        background: #ccc;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .toggle-switch.active {
+        background: #007bff;
+      }
+
+      .toggle-switch::after {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 20px;
+        height: 20px;
+        background: white;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+      }
+
+      .toggle-switch.active::after {
+        left: 28px;
+      }
+
+      /* Main Demo Area */
+      .demo-area {
+        flex: 1;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .demo-content {
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        padding: 40px;
+        border-radius: 12px;
+        max-width: 600px;
+        text-align: center;
+      }
+
+      .dark-mode .demo-content {
+        background: rgba(30, 30, 30, 0.9);
+        color: white;
+      }
+
+      /* Help System Styles */
+      .help-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .help-overlay.show {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .help-sidebar {
+        position: fixed;
+        top: 0;
+        right: -450px;
+        width: 450px;
+        height: 100%;
+        background: white;
+        box-shadow: -2px 0 20px rgba(0, 0, 0, 0.15);
+        transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 1001;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .dark-mode .help-sidebar {
+        background: #2c3e50;
+        color: white;
+      }
+
+      .help-sidebar.open {
+        right: 0;
+      }
+
+      .help-header {
+        padding: 25px;
+        border-bottom: 1px solid #e9ecef;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .dark-mode .help-header {
+        background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+        border-bottom: 1px solid #3a4a5e;
+      }
+
+      .help-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #333;
+      }
+
+      .dark-mode .help-title {
+        color: white;
+      }
+
+      .help-close-btn {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #6c757d;
+        width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: all 0.2s ease;
+      }
+
+      .help-close-btn:hover {
+        background: rgba(0, 0, 0, 0.1);
+        color: #333;
+      }
+
+      .dark-mode .help-close-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+      }
+
+      .help-content {
+        flex: 1;
+        overflow-y: auto;
+        padding: 25px;
+      }
+
+      /* Search Box */
+      .help-search {
+        position: relative;
+        margin-bottom: 20px;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+      }
+
+      .help-search.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .help-search input {
+        width: 100%;
+        padding: 12px 40px 12px 15px;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+      }
+
+      .help-search input:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+      }
+
+      .help-search i {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6c757d;
+      }
+
+      /* Progress Bar */
+      .help-progress {
+        height: 4px;
+        background: #e9ecef;
+        border-radius: 2px;
+        margin-bottom: 20px;
+        overflow: hidden;
+        opacity: 0;
+        transition: all 0.3s ease;
+      }
+
+      .help-progress.show {
+        opacity: 1;
+      }
+
+      .help-progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, #007bff, #0056b3);
+        width: 0%;
+        transition: width 0.3s ease;
+        position: relative;
+      }
+
+      .help-progress-bar::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent
+        );
+        animation: shimmer 2s infinite;
+      }
+
+      @keyframes shimmer {
+        0% {
+          transform: translateX(-100%);
+        }
+        100% {
+          transform: translateX(100%);
+        }
+      }
+
+      /* Enhanced Stepper */
+      .help-stepper {
+        margin: 20px 0;
+      }
+
+      .stepper-container {
+        position: relative;
+      }
+
+      .stepper-item {
+        position: relative;
+        display: flex;
+        margin-bottom: 20px;
+        min-height: 50px;
+        opacity: 0;
+        transform: translateX(-20px);
+        animation: slideIn 0.5s ease forwards;
+      }
+
+      .stepper-item:nth-child(1) {
+        animation-delay: 0.1s;
+      }
+      .stepper-item:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .stepper-item:nth-child(3) {
+        animation-delay: 0.3s;
+      }
+      .stepper-item:nth-child(4) {
+        animation-delay: 0.4s;
+      }
+
+      @keyframes slideIn {
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      .stepper-connector {
+        position: absolute;
+        left: 19px;
+        top: 40px;
+        width: 2px;
+        height: calc(100% + 20px);
+        background: linear-gradient(180deg, #007bff, #0056b3);
+        z-index: 1;
+      }
+
+      .stepper-marker {
+        position: relative;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        color: white;
+        font-weight: 600;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        z-index: 2;
+        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+        transition: all 0.3s ease;
+      }
+
+      .stepper-marker:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 16px rgba(0, 123, 255, 0.4);
+      }
+
+      .stepper-marker.completed {
+        background: linear-gradient(135deg, #28a745, #20c997);
+      }
+
+      .stepper-marker.completed::after {
+        content: "✓";
+        font-size: 14px;
+      }
+
+      .stepper-content {
+        margin-left: 20px;
+        flex: 1;
+        padding-top: 8px;
+      }
+
+      .stepper-content h4 {
+        font-size: 1rem;
+        margin-bottom: 5px;
+        color: #333;
+      }
+
+      .dark-mode .stepper-content h4 {
+        color: white;
+      }
+
+      .stepper-content p {
+        font-size: 0.9rem;
+        line-height: 1.5;
+        color: #6c757d;
+        margin: 0;
+      }
+
+      .dark-mode .stepper-content p {
+        color: #bbb;
+      }
+
+      /* Interactive Elements */
+      .help-section {
+        border: 1px solid #e9ecef;
+        border-radius: 12px;
+        margin-bottom: 15px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .help-section:hover {
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transform: translateY(-2px);
+      }
+
+      .dark-mode .help-section {
+        border: 1px solid #3a4a5e;
+      }
+
+      .help-section-header {
+        padding: 20px;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        transition: all 0.3s ease;
+      }
+
+      .help-section-header:hover {
+        background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+      }
+
+      .dark-mode .help-section-header {
+        background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+      }
+
+      .dark-mode .help-section-header:hover {
+        background: linear-gradient(135deg, #3a4a5e 0%, #34495e 100%);
+      }
+
+      .help-section-title {
+        display: flex;
+        align-items: center;
+        font-weight: 600;
+        color: #333;
+      }
+
+      .dark-mode .help-section-title {
+        color: white;
+      }
+
+      .help-icon {
+        margin-right: 12px;
+        color: #007bff;
+        font-size: 1.1rem;
+      }
+
+      .help-chevron {
+        font-size: 1.2rem;
+        color: #6c757d;
+        transition: transform 0.3s ease;
+      }
+
+      .help-chevron.expanded {
+        transform: rotate(90deg);
+      }
+
+      .help-section-content {
+        padding: 20px;
+        background: white;
+        border-top: 1px solid #e9ecef;
+      }
+
+      .dark-mode .help-section-content {
+        background: #2c3e50;
+        border-top: 1px solid #3a4a5e;
+      }
+
+      /* Trigger Button */
+      .help-trigger-btn {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 1.3rem;
+        box-shadow: 0 8px 25px rgba(0, 123, 255, 0.4);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 999;
+      }
+
+      .help-trigger-btn:hover {
+        transform: scale(1.1) translateY(-2px);
+        box-shadow: 0 12px 35px rgba(0, 123, 255, 0.5);
+      }
+
+      .help-trigger-btn.pulse {
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 8px 25px rgba(0, 123, 255, 0.4);
+        }
+        50% {
+          box-shadow: 0 8px 25px rgba(0, 123, 255, 0.8);
+        }
+        100% {
+          box-shadow: 0 8px 25px rgba(0, 123, 255, 0.4);
+        }
+      }
+
+      /* Loading Animation */
+      .help-loading {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 200px;
+      }
+
+      .help-loading-spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #007bff;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-bottom: 15px;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Mobile Responsive */
+      @media (max-width: 768px) {
+        .demo-container {
+          flex-direction: column;
+        }
+
+        .controls-panel {
+          width: 100%;
+          height: auto;
+          max-height: 40vh;
+        }
+
+        .help-sidebar {
+          width: 100%;
+          right: -100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="demo-container">
+      <!-- Enhancement Controls -->
+      <div class="controls-panel">
+        <h2 class="controls-title">🚀 Enhancement Options</h2>
+
+        <div class="control-group">
+          <h3>🎨 Visual Enhancements</h3>
+          <div class="control-item">
+            <label>Dark Mode Support</label>
+            <div class="toggle-switch" data-feature="darkMode"></div>
+          </div>
+          <div class="control-item">
+            <label>Enhanced Animations</label>
+            <div class="toggle-switch" data-feature="animations"></div>
+          </div>
+          <div class="control-item">
+            <label>Glassmorphism Effect</label>
+            <div class="toggle-switch" data-feature="glassmorphism"></div>
+          </div>
+          <div class="control-item">
+            <label>Gradient Backgrounds</label>
+            <div class="toggle-switch" data-feature="gradients"></div>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <h3>🔍 Functionality</h3>
+          <div class="control-item">
+            <label>Search Bar</label>
+            <div class="toggle-switch" data-feature="search"></div>
+          </div>
+          <div class="control-item">
+            <label>Progress Tracking</label>
+            <div class="toggle-switch" data-feature="progress"></div>
+          </div>
+          <div class="control-item">
+            <label>Step Completion</label>
+            <div class="toggle-switch" data-feature="completion"></div>
+          </div>
+          <div class="control-item">
+            <label>Pulse Animation</label>
+            <div class="toggle-switch" data-feature="pulse"></div>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <h3>📱 UX Improvements</h3>
+          <div class="control-item">
+            <label>Smooth Transitions</label>
+            <div class="toggle-switch active" data-feature="transitions"></div>
+          </div>
+          <div class="control-item">
+            <label>Hover Effects</label>
+            <div class="toggle-switch active" data-feature="hover"></div>
+          </div>
+          <div class="control-item">
+            <label>Loading States</label>
+            <div class="toggle-switch" data-feature="loading"></div>
+          </div>
+          <div class="control-item">
+            <label>Enhanced Shadows</label>
+            <div class="toggle-switch" data-feature="shadows"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Demo Area -->
+      <div class="demo-area">
+        <div class="demo-content">
+          <h1>Help System Demo</h1>
+          <p>
+            Toggle the enhancement options on the left to see how they affect
+            the help system UI.
+          </p>
+          <p>
+            Click the help button to open the sidebar and explore the features.
+          </p>
+          <br />
+          <button class="help-trigger-btn" onclick="openHelp()">
+            <i class="fas fa-question"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Help System -->
+    <div class="help-overlay" onclick="closeHelp()"></div>
+    <div class="help-sidebar">
+      <div class="help-header">
+        <h2 class="help-title">User Management Help</h2>
+        <button class="help-close-btn" onclick="closeHelp()">×</button>
+      </div>
+
+      <div class="help-content">
+        <div class="help-search">
+          <input type="text" placeholder="Search help content..." />
+          <i class="fas fa-search"></i>
+        </div>
+
+        <div class="help-progress">
+          <div class="help-progress-bar"></div>
+        </div>
+
+        <div class="help-section">
+          <div class="help-section-header" onclick="toggleSection(this)">
+            <div class="help-section-title">
+              <i class="help-icon fas fa-users"></i>
+              <span>Creating New Users</span>
+            </div>
+            <div class="help-chevron">›</div>
+          </div>
+          <div class="help-section-content" style="display: none">
+            <div class="help-stepper">
+              <div class="stepper-container">
+                <div class="stepper-item">
+                  <div class="stepper-connector"></div>
+                  <div class="stepper-marker">1</div>
+                  <div class="stepper-content">
+                    <h4>Navigate to User Management</h4>
+                    <p>
+                      Go to Settings > User Management from the main navigation
+                      menu.
+                    </p>
+                  </div>
+                </div>
+                <div class="stepper-item">
+                  <div class="stepper-connector"></div>
+                  <div class="stepper-marker">2</div>
+                  <div class="stepper-content">
+                    <h4>Click Add New User</h4>
+                    <p>
+                      Click the "Add New User" button in the top right corner of
+                      the user list.
+                    </p>
+                  </div>
+                </div>
+                <div class="stepper-item">
+                  <div class="stepper-connector"></div>
+                  <div class="stepper-marker">3</div>
+                  <div class="stepper-content">
+                    <h4>Fill User Details</h4>
+                    <p>
+                      Enter the user's name, email, and select their role from
+                      the dropdown.
+                    </p>
+                  </div>
+                </div>
+                <div class="stepper-item">
+                  <div class="stepper-marker">4</div>
+                  <div class="stepper-content">
+                    <h4>Save and Send Invitation</h4>
+                    <p>
+                      Click "Save & Send Invitation" to create the user and send
+                      them login details.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="help-section">
+          <div class="help-section-header" onclick="toggleSection(this)">
+            <div class="help-section-title">
+              <i class="help-icon fas fa-key"></i>
+              <span>Managing Permissions</span>
+            </div>
+            <div class="help-chevron">›</div>
+          </div>
+          <div class="help-section-content" style="display: none">
+            <p>Learn how to assign and modify user permissions...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Feature toggle functionality
+      const features = {
+        darkMode: false,
+        animations: false,
+        glassmorphism: false,
+        gradients: false,
+        search: false,
+        progress: false,
+        completion: false,
+        pulse: false,
+        transitions: true,
+        hover: true,
+        loading: false,
+        shadows: false,
+      };
+
+      // Initialize toggles
+      document.querySelectorAll(".toggle-switch").forEach((toggle) => {
+        const feature = toggle.dataset.feature;
+        if (features[feature]) {
+          toggle.classList.add("active");
+        }
+
+        toggle.addEventListener("click", () => {
+          toggle.classList.toggle("active");
+          features[feature] = toggle.classList.contains("active");
+          applyFeature(feature, features[feature]);
+        });
+      });
+
+      function applyFeature(feature, enabled) {
+        const body = document.body;
+        const helpSidebar = document.querySelector(".help-sidebar");
+        const helpTrigger = document.querySelector(".help-trigger-btn");
+        const searchBox = document.querySelector(".help-search");
+        const progressBar = document.querySelector(".help-progress");
+
+        switch (feature) {
+          case "darkMode":
+            body.classList.toggle("dark-mode", enabled);
+            break;
+
+          case "search":
+            searchBox.classList.toggle("show", enabled);
+            break;
+
+          case "progress":
+            progressBar.classList.toggle("show", enabled);
+            if (enabled) {
+              setTimeout(() => {
+                progressBar.querySelector(".help-progress-bar").style.width =
+                  "60%";
+              }, 500);
+            }
+            break;
+
+          case "completion":
+            document
+              .querySelectorAll(".stepper-marker")
+              .forEach((marker, index) => {
+                if (enabled && index < 2) {
+                  marker.classList.add("completed");
+                  marker.textContent = "";
+                } else {
+                  marker.classList.remove("completed");
+                  marker.textContent = index + 1;
+                }
+              });
+            break;
+
+          case "pulse":
+            helpTrigger.classList.toggle("pulse", enabled);
+            break;
+
+          case "loading":
+            if (enabled) {
+              showLoadingState();
+            }
+            break;
+        }
+      }
+
+      function showLoadingState() {
+        const content = document.querySelector(".help-content");
+        const originalContent = content.innerHTML;
+
+        content.innerHTML = `
+                <div class="help-loading">
+                    <div class="help-loading-spinner"></div>
+                    <p>Loading help content...</p>
+                </div>
+            `;
+
+        setTimeout(() => {
+          content.innerHTML = originalContent;
+          // Re-apply current features
+          Object.keys(features).forEach((feature) => {
+            if (features[feature]) {
+              applyFeature(feature, true);
+            }
+          });
+        }, 2000);
+      }
+
+      function openHelp() {
+        document.querySelector(".help-overlay").classList.add("show");
+        document.querySelector(".help-sidebar").classList.add("open");
+      }
+
+      function closeHelp() {
+        document.querySelector(".help-overlay").classList.remove("show");
+        document.querySelector(".help-sidebar").classList.remove("open");
+      }
+
+      function toggleSection(header) {
+        const content = header.nextElementSibling;
+        const chevron = header.querySelector(".help-chevron");
+
+        if (content.style.display === "none") {
+          content.style.display = "block";
+          chevron.classList.add("expanded");
+        } else {
+          content.style.display = "none";
+          chevron.classList.remove("expanded");
+        }
+      }
+
+      // Auto-open help on load for demo
+      setTimeout(() => {
+        openHelp();
+      }, 1000);
+    </script>
+  </body>
+</html>
